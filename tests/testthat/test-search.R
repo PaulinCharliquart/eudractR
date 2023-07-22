@@ -4,8 +4,8 @@ test_that("Test info", {
   expect_null(info("2021-123456-12"))
 })
 
-test_that("Test search", {
-  expect_snapshot(search("EFC14280"))
-  expect_equal(length(search("eeeeeeeeee")), 0)
-  expect_equal(length(search("covid", 10)), 10)
+test_that("Test search_studies", {
+  expect_snapshot(search_studies("EFC14280"))
+  expect_equal(length(search_studies("eeeeeeeeee")), 0)
+  expect_equal(length(search_studies("covid", 10)), 10)
 })

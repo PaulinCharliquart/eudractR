@@ -9,8 +9,8 @@
 #' @importFrom stringr str_extract_all
 #' @importFrom httr GET content
 #' @examples
-#' search("covid")
-search <- function(query, size = NULL) {
+#' search_studies("covid")
+search_studies <- function(query, size = NULL) {
   url <- "https://www.clinicaltrialsregister.eu/ctr-search/search"
   next_page <- "&page=1"
   ids <- c()
