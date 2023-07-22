@@ -1,4 +1,16 @@
-search <- function(query, size = NULL, cache_file = NULL) {
+#' Search Studies in Eudract
+#'
+#' @param query a text query
+#' @param size number of results to return
+#'
+#' @return a list of results
+#' @export
+#'
+#' @importFrom stringr str_extract_all
+#' @importFrom httr GET content
+#' @examples
+#' search("covid")
+search <- function(query, size = NULL) {
   url <- "https://www.clinicaltrialsregister.eu/ctr-search/search"
   next_page <- "&page=1"
   ids <- c()
@@ -25,7 +37,18 @@ search <- function(query, size = NULL, cache_file = NULL) {
 }
 
 
-info <- function(eudract, cache_file = NULL) {
+#' Get info for 1 study
+#'
+#' @param eudract an eudract id
+#'
+#' @return a list of results
+#' @export
+#'
+#' @importFrom stringr str_extract_all
+#' @importFrom httr GET content parse_url build_url
+#' @examples
+#' info("2015-001314-10")
+info <- function(eudract) {
   url <- parse_url("https://www.clinicaltrialsregister.eu/")
 
   if (!validate_id(eudract_id = eudract)) {

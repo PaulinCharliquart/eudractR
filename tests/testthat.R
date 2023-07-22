@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(eudract - R)
+library(eudractR)
 
-test_check("eudract-R")
+test_check("eudractR")

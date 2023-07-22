@@ -1,3 +1,9 @@
+#' Validate eudract id
+#'
+#' @param eudract_id an eudract id to test
+#'
+#' @return TRUE or FALSE
+#' @export
 validate_id <- function(eudract_id) {
   test_id <- grepl("^20\\d{2}-\\d{6}-\\d{2}$", eudract_id)
   if (!test_id) {
@@ -12,6 +18,13 @@ validate_id <- function(eudract_id) {
 }
 
 
+#' Parse data
+#'
+#' @param x a text to parse
+#'
+#' @return a named list
+#'
+#' @importFrom rvest read_html html_elements html_text
 parse_data <- function(x) {
   section <- c(
     "A. PROTOCOL INFORMATION",
