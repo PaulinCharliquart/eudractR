@@ -11,7 +11,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: 
     httr,
-    jsonlite
+    jsonlite,
+    stringr
 Suggests: 
     knitr,
     rmarkdown,
