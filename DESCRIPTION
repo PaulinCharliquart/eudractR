@@ -12,6 +12,7 @@ RoxygenNote: 7.2.3
 Imports: 
     httr,
     jsonlite,
+    rvest,
     stringr
 Suggests: 
     knitr,
