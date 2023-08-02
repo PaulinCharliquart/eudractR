@@ -11,6 +11,7 @@
 #' @examples
 #' search_studies("covid")
 search_studies <- function(query, size = NULL) {
+  httr::set_config(config(ssl_verifypeer = 0L))
   url <- "https://www.clinicaltrialsregister.eu/ctr-search/search"
   next_page <- "&page=1"
   ids <- c()
@@ -49,6 +50,7 @@ search_studies <- function(query, size = NULL) {
 #' @examples
 #' info("2015-001314-10")
 info <- function(eudract) {
+  httr::set_config(config(ssl_verifypeer = 0L))
   url <- parse_url("https://www.clinicaltrialsregister.eu/")
 
   if (!validate_id(eudract_id = eudract)) {
