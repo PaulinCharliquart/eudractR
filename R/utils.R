@@ -65,3 +65,34 @@ parse_data <- function(x) {
   }
   data
 }
+
+#' Write cache
+#'
+#' @param key a key to cache data
+#' @param data a object to cache
+#' @param cache_file a file to store cached data
+#'
+#' @return TRUE or FALSE
+write_cache <- function(key, data, cache_file = ".eudract.rds") {
+  if (!file.exists(cache_file)) {
+    db <- list()
+  } else {
+    db <- readRDS(cache_file)
+  }
+  db[[key]] <- data
+  saveRDS(db, cache_file)
+}
+
+#' Read cache
+#'
+#' @param key a key to cache data
+#' @param cache_file a file to store cached data
+#'
+#' @return Cached data if exist. Otherwise NULL
+read_cache <- function(key, cache_file = ".eudract.rds") {
+  if (!file.exists(cache_file)) {
+    return(NULL)
+  }
+  db <- readRDS(cache_file)
+  db[[key]]
+}

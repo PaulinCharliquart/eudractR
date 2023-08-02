@@ -56,6 +56,10 @@ info <- function(eudract) {
   if (!validate_id(eudract_id = eudract)) {
     return(NULL)
   }
+  cached_data <- read_cache(eudract)
+  if (!is.null(cached_data)) {
+    return(cached_data)
+  }
   url$path <- "ctr-search/search"
   r <- GET(build_url(url), query = list("query" = eudract))
   text <- content(r, as = "text")
@@ -71,5 +75,7 @@ info <- function(eudract) {
   }
   url$path <- full_url[1]
   r_full <- GET(build_url(url))
-  parse_data(r_full)
+  res <- parse_data(r_full)
+  write_cache(eudract, res)
+  res
 }

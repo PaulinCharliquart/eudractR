@@ -7177,10 +7177,10 @@
       
       
 
-# Test search
+# Test search_studies
 
     Code
-      search("EFC14280")
+      search_studies("EFC14280")
     Output
       [[1]]
       [[1]]$`A. PROTOCOL INFORMATION`
