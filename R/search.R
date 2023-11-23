@@ -7,21 +7,18 @@
 #' @export
 #'
 #' @importFrom stringr str_extract_all
-#' @importFrom httr GET content
+#' @importFrom httr2 request req_url_query req_perform resp_body_string
 #' @examples
-#' search_studies("covid")
+#' search_studies("dupilumab")
 search_studies <- function(query, size = NULL) {
-  httr::set_config(httr::config(ssl_verifypeer = 0L))
-  url <- "https://www.clinicaltrialsregister.eu/ctr-search/search"
+  req <- request("https://www.clinicaltrialsregister.eu/ctr-search/search")
   next_page <- "&page=1"
   ids <- c()
   while (length(next_page) > 0) {
     page_id <- str_extract_all(next_page, "\\d")
-    r <- GET(
-      url,
-      query = list("query" = trimws(query), "page" = unlist(page_id)[1])
-    )
-    text <- content(r, as = "text")
+    r <- req_url_query(req, query = trimws(query), page = unlist(page_id)[1])
+    r <- req_perform(r)
+    text <- resp_body_string(r)
     next_page <- str_extract_all(
       text,
       '(?<=href=\\").*?(?=\\"\\saccesskey=\\"n\\">\\s*Next)',
@@ -46,13 +43,10 @@ search_studies <- function(query, size = NULL) {
 #' @export
 #'
 #' @importFrom stringr str_extract_all
-#' @importFrom httr GET content parse_url build_url
+#' @importFrom httr2 request req_url_path req_perform resp_body_string
 #' @examples
 #' info("2015-001314-10")
 info <- function(eudract) {
-  httr::set_config(httr::config(ssl_verifypeer = 0L))
-  url <- parse_url("https://www.clinicaltrialsregister.eu/")
-
   if (!validate_id(eudract_id = eudract)) {
     return(NULL)
   }
@@ -60,9 +54,11 @@ info <- function(eudract) {
   if (!is.null(cached_data)) {
     return(cached_data)
   }
-  url$path <- "ctr-search/search"
-  r <- GET(build_url(url), query = list("query" = eudract))
-  text <- content(r, as = "text")
+  req <- request("https://www.clinicaltrialsregister.eu/")
+  r <- req_url_path(req, "ctr-search/search")
+  r <- req_url_query(r, "query" = eudract)
+  r <- req_perform(r)
+  text <- resp_body_string(r)
 
   full_url <- str_extract_all(
     text,
@@ -73,9 +69,10 @@ info <- function(eudract) {
   if (length(full_url) == 0) {
     return(NULL)
   }
-  url$path <- full_url[1]
-  r_full <- GET(build_url(url))
-  res <- parse_data(r_full)
+  r <- req_url_path(req, full_url[1])
+  r <- req_perform(r)
+  data <- resp_body_string(r)
+  res <- parse_data(data)
   write_cache(eudract, res)
   res
 }

@@ -18,5 +18,5 @@ a list of results
 Search Studies in Eudract
 }
 \examples{
-search_studies("covid")
+search_studies("dupilumab")
 }
