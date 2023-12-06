@@ -38,6 +38,7 @@ search_studies <- function(query, size = NULL) {
 #' Get info for 1 study
 #'
 #' @param eudract an eudract id
+#' @param cache_file RDS file used to cache data
 #'
 #' @return a list of results
 #' @export
@@ -46,13 +47,15 @@ search_studies <- function(query, size = NULL) {
 #' @importFrom httr2 request req_url_path req_perform resp_body_string
 #' @examples
 #' info("2015-001314-10")
-info <- function(eudract) {
+info <- function(eudract, cache_file = NULL) {
   if (!validate_id(eudract_id = eudract)) {
     return(NULL)
   }
-  cached_data <- read_cache(eudract)
-  if (!is.null(cached_data)) {
-    return(cached_data)
+  if (!is.null(cache_file)) {
+    cached_data <- read_cache(eudract, cache_file)
+    if (!is.null(cached_data)) {
+      return(cached_data)
+    }
   }
   req <- request("https://www.clinicaltrialsregister.eu/")
   r <- req_url_path(req, "ctr-search/search")
@@ -73,6 +76,8 @@ info <- function(eudract) {
   r <- req_perform(r)
   data <- resp_body_string(r)
   res <- parse_data(data)
-  write_cache(eudract, res)
+  if (!is.null(cache_file)) {
+    write_cache(eudract, res, cache_file)
+  }
   res
 }

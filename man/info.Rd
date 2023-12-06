@@ -4,10 +4,12 @@
 \alias{info}
 \title{Get info for 1 study}
 \usage{
-info(eudract)
+info(eudract, cache_file = NULL)
 }
 \arguments{
 \item{eudract}{an eudract id}
+
+\item{cache_file}{RDS file used to cache data}
 }
 \value{
 a list of results

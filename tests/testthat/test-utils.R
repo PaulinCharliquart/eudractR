@@ -10,5 +10,14 @@ test_that("Test read cache", {
   expect_null(read_cache("ehehe", cache_file = "hehehehe"))
   cached_data <- list(a = 1, b = 2)
   write_cache("hello", cached_data, cache_file = db)
-  expect_equal(read_cache("hello"), cached_data, cache_file = db)
+  expect_equal(read_cache("hello", cache_file = db), cached_data)
+})
+
+test_that("Test write cache", {
+  db <- tempfile()
+  cached_data <- list(a = 1, b = 2)
+  write_cache("1", cached_data, cache_file = db)
+  write_cache("2", cached_data, cache_file = db)
+  expect_equal(read_cache("1", db), cached_data)
+  expect_equal(read_cache("2", db), cached_data)
 })
