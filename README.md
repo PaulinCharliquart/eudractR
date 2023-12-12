@@ -27,3 +27,16 @@ fetch_study("2015-001314-10") # to retrieve clinical trial info by Eudract ID
 search("covid") # to search clinical trials about covid
 ```
 
+## Issues
+
+Report issue [here](https://github.com/PaulinCharliquart/eudract-py/issues).
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
