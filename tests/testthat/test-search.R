@@ -1,9 +1,9 @@
-test_that("Test info", {
-  expect_snapshot(info("2015-001314-10"))
-  expect_identical(info("fake_id"), NULL)
-  expect_null(info("2021-123456-12"))
+test_that("Test fetch_study", {
+  expect_snapshot(fetch_study("2015-001314-10"))
+  expect_identical(fetch_study("fake_id"), NULL)
+  expect_null(fetch_study("2021-123456-12"))
   db <- tempfile()
-  a <- info("2015-001314-10", db)
+  a <- fetch_study("2015-001314-10", db)
   expect_true(!is.null(read_cache("2015-001314-10", db)))
   expect_equal(a, read_cache("2015-001314-10", db))
 })

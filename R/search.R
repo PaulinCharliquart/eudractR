@@ -16,9 +16,10 @@ search_studies <- function(query, size = NULL) {
   ids <- c()
   while (length(next_page) > 0) {
     page_id <- str_extract_all(next_page, "\\d")
-    r <- req_url_query(req, query = trimws(query), page = unlist(page_id)[1])
-    r <- req_perform(r)
-    text <- resp_body_string(r)
+    text <- req %>%
+      req_url_query(query = trimws(query), page = unlist(page_id)[1]) %>%
+      req_perform() %>%
+      resp_body_string()
     next_page <- str_extract_all(
       text,
       '(?<=href=\\").*?(?=\\"\\saccesskey=\\"n\\">\\s*Next)',
@@ -31,11 +32,11 @@ search_studies <- function(query, size = NULL) {
       break
     }
   }
-  lapply(ids, info)
+  lapply(ids, fetch_study)
 }
 
 
-#' Get info for 1 study
+#' Fetch info for a clinical study
 #'
 #' @param eudract an eudract id
 #' @param cache_file RDS file used to cache data
@@ -46,8 +47,8 @@ search_studies <- function(query, size = NULL) {
 #' @importFrom stringr str_extract_all
 #' @importFrom httr2 request req_url_path req_perform resp_body_string
 #' @examples
-#' info("2015-001314-10")
-info <- function(eudract, cache_file = NULL) {
+#' fetch_study("2015-001314-10")
+fetch_study <- function(eudract, cache_file = NULL) {
   if (!validate_id(eudract_id = eudract)) {
     return(NULL)
   }
@@ -58,10 +59,11 @@ info <- function(eudract, cache_file = NULL) {
     }
   }
   req <- request("https://www.clinicaltrialsregister.eu/")
-  r <- req_url_path(req, "ctr-search/search")
-  r <- req_url_query(r, "query" = eudract)
-  r <- req_perform(r)
-  text <- resp_body_string(r)
+  text <- req %>%
+    req_url_path("ctr-search/search") %>%
+    req_url_query("query" = eudract) %>%
+    req_perform() %>%
+    resp_body_string()
 
   full_url <- str_extract_all(
     text,
@@ -72,12 +74,14 @@ info <- function(eudract, cache_file = NULL) {
   if (length(full_url) == 0) {
     return(NULL)
   }
-  r <- req_url_path(req, full_url[1])
-  r <- req_perform(r)
-  data <- resp_body_string(r)
-  res <- parse_data(data)
+  data <- req %>%
+    req_url_path(full_url[1]) %>%
+    req_perform() %>%
+    resp_body_string() %>%
+    parse_data()
+
   if (!is.null(cache_file)) {
-    write_cache(eudract, res, cache_file)
+    write_cache(eudract, data, cache_file)
   }
-  res
+  data
 }

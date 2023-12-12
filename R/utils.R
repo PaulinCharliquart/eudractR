@@ -1,3 +1,19 @@
+#' Pipe operator
+#'
+#' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
+#'
+#' @name %>%
+#' @rdname pipe
+#' @keywords internal
+#' @export
+#' @importFrom magrittr %>%
+#' @usage lhs \%>\% rhs
+#' @param lhs A value or the magrittr placeholder.
+#' @param rhs A function call using the magrittr semantics.
+#' @return The result of calling `rhs(lhs)`.
+NULL
+
+
 #' Validate eudract id
 #'
 #' @param eudract_id an eudract id to test
@@ -5,8 +21,7 @@
 #' @return TRUE or FALSE
 #' @export
 validate_id <- function(eudract_id) {
-  test_id <- grepl("^20\\d{2}-\\d{6}-\\d{2}$", eudract_id)
-  if (!test_id) {
+  if (!grepl("^20\\d{2}-\\d{6}-\\d{2}$", eudract_id)) {
     return(FALSE)
   }
   today_year <- as.integer(format(Sys.Date(), "%Y"))

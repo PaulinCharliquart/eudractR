@@ -1,7 +1,7 @@
-# Test info
+# Test fetch_study
 
     Code
-      info("2015-001314-10")
+      fetch_study("2015-001314-10")
     Output
       $`A. PROTOCOL INFORMATION`
       $`A. PROTOCOL INFORMATION`$`A.1:Member State Concerned`
