@@ -11,6 +11,7 @@
 #' @param lhs A value or the magrittr placeholder.
 #' @param rhs A function call using the magrittr semantics.
 #' @return The result of calling `rhs(lhs)`.
+#' @noRd
 NULL
 
 
@@ -40,6 +41,7 @@ validate_id <- function(eudract_id) {
 #' @return a named list
 #'
 #' @importFrom rvest read_html html_elements html_text
+#' @noRd
 parse_data <- function(x) {
   section <- c(
     "A. PROTOCOL INFORMATION",
@@ -88,6 +90,7 @@ parse_data <- function(x) {
 #' @param cache_file a file to store cached data
 #'
 #' @return TRUE or FALSE
+#' @noRd
 write_cache <- function(key, data, cache_file = ".eudract.rds") {
   if (!file.exists(cache_file)) {
     db <- list()
@@ -104,6 +107,7 @@ write_cache <- function(key, data, cache_file = ".eudract.rds") {
 #' @param cache_file a file to store cached data
 #'
 #' @return Cached data if exist. Otherwise NULL
+#' @noRd
 read_cache <- function(key, cache_file = ".eudract.rds") {
   if (!file.exists(cache_file)) {
     return(NULL)

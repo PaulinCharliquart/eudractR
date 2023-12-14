@@ -1,9 +1,6 @@
 
 # eudractR
 
-<!-- badges: start -->
-<!-- badges: end -->
-
 The goal of eudractR is package to help you find clinical trials on EUDRACT.
 
 ## Installation
@@ -15,7 +12,7 @@ You can install the development version of eudractR from [GitHub](https://github
 devtools::install_github("PaulinCharliquart/eudractR")
 ```
 
-## Example
+## Examples
 
 This is a basic example which shows you how to solve a common problem:
 
