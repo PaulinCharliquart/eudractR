@@ -21,3 +21,8 @@ test_that("Test write cache", {
   expect_equal(read_cache("1", db), cached_data)
   expect_equal(read_cache("2", db), cached_data)
 })
+
+
+test_that("Test extract_all", {
+  expect_identical(extract_all("&page=1", "\\d"), list("1"))
+})

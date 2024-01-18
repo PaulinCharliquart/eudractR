@@ -8,12 +8,10 @@ Description: Search and fetch data about clinical trials registered in EUDRACT d
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.0
 Imports: 
-    httr2,
-    magrittr,
-    rvest,
-    stringr
+    curl,
+    xml2
 Suggests: 
     knitr,
     rmarkdown,

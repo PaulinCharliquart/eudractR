@@ -1,3 +1,6 @@
+base_url <- "https://www.clinicaltrialsregister.eu/"
+
+
 #' Search Studies in Eudract
 #'
 #' @param query a text query
@@ -6,26 +9,24 @@
 #' @return a list of results
 #' @export
 #'
-#' @importFrom stringr str_extract_all
-#' @importFrom httr2 request req_url_query req_perform resp_body_string
+#' @importFrom curl new_handle handle_setopt curl_fetch_memory
 #' @examples
 #' search_studies("dupilumab")
 search_studies <- function(query, size = NULL) {
-  req <- request("https://www.clinicaltrialsregister.eu/ctr-search/search")
+  h <- new_handle()
+  handle_setopt(h, ssl_verifypeer = FALSE)
+  url <- paste0(base_url, "ctr-search/search?query=", trimws(query))
   next_page <- "&page=1"
   ids <- c()
-  while (length(next_page) > 0) {
-    page_id <- str_extract_all(next_page, "\\d")
-    text <- req %>%
-      req_url_query(query = trimws(query), page = unlist(page_id)[1]) %>%
-      req_perform() %>%
-      resp_body_string()
-    next_page <- str_extract_all(
+  while (length(next_page) > 0 && !is.na(unlist(next_page)[1])) {
+    page_id <- extract_all(next_page, "\\d")
+    req <- curl_fetch_memory(paste0(url, "&page=", unlist(page_id)[1]), h)
+    text <- rawToChar(req$content)
+    next_page <- extract_all(
       text,
-      '(?<=href=\\").*?(?=\\"\\saccesskey=\\"n\\">\\s*Next)',
-      simplify = TRUE
+      '(?<=href=\\").*?(?=\\"\\saccesskey=\\"n\\">\\s*Next)'
     )
-    found <- unlist(str_extract_all(text, "20\\d{2}-\\d{6}-\\d{2}"))
+    found <- unlist(extract_all(text, "20\\d{2}-\\d{6}-\\d{2}"))
     ids <- c(ids, unique(found))
     if (!is.null(size) && length(ids) >= size) {
       ids <- ids[1:size]
@@ -44,8 +45,7 @@ search_studies <- function(query, size = NULL) {
 #' @return a list of results
 #' @export
 #'
-#' @importFrom stringr str_extract_all
-#' @importFrom httr2 request req_url_path req_perform resp_body_string
+#' @importFrom curl new_handle handle_setopt curl_fetch_memory
 #' @examples
 #' fetch_study("2015-001314-10")
 fetch_study <- function(eudract, cache_file = NULL) {
@@ -58,27 +58,22 @@ fetch_study <- function(eudract, cache_file = NULL) {
       return(cached_data)
     }
   }
-  req <- request("https://www.clinicaltrialsregister.eu/")
-  text <- req %>%
-    req_url_path("ctr-search/search") %>%
-    req_url_query("query" = eudract) %>%
-    req_perform() %>%
-    resp_body_string()
-
-  full_url <- str_extract_all(
+  h <- new_handle()
+  handle_setopt(h, ssl_verifypeer = FALSE)
+  url <- paste0(base_url, "ctr-search/search?query=", eudract)
+  req <- curl_fetch_memory(url, h)
+  text <- rawToChar(req$content)
+  full_url <- extract_all(
     text,
-    sprintf("ctr-search/trial/%s/[A-Z][A-Z]", eudract),
-    simplify = TRUE
+    sprintf("ctr-search/trial/%s/[A-Z][A-Z]", eudract)
   )
 
-  if (length(full_url) == 0) {
+  if (length(full_url) == 0 || is.na(unlist(full_url)[1])) {
     return(NULL)
   }
-  data <- req %>%
-    req_url_path(full_url[1]) %>%
-    req_perform() %>%
-    resp_body_string() %>%
-    parse_data()
+  req <- curl_fetch_memory(paste0(base_url, unlist(full_url)[1]), h)
+  text <- rawToChar(req$content)
+  data <- parse_data(text)
 
   if (!is.null(cache_file)) {
     write_cache(eudract, data, cache_file)

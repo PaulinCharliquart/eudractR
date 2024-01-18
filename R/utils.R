@@ -1,20 +1,3 @@
-#' Pipe operator
-#'
-#' See \code{magrittr::\link[magrittr:pipe]{\%>\%}} for details.
-#'
-#' @name %>%
-#' @rdname pipe
-#' @keywords internal
-#' @export
-#' @importFrom magrittr %>%
-#' @usage lhs \%>\% rhs
-#' @param lhs A value or the magrittr placeholder.
-#' @param rhs A function call using the magrittr semantics.
-#' @return The result of calling `rhs(lhs)`.
-#' @noRd
-NULL
-
-
 #' Validate eudract id
 #'
 #' @param eudract_id an eudract id to test
@@ -40,7 +23,7 @@ validate_id <- function(eudract_id) {
 #'
 #' @return a named list
 #'
-#' @importFrom rvest read_html html_elements html_text
+#' @importFrom xml2 read_html xml_text xml_find_all
 #' @noRd
 parse_data <- function(x) {
   section <- c(
@@ -57,13 +40,13 @@ parse_data <- function(x) {
   data <- sapply(section, function(x) NULL)
   text <- read_html(x)
   field_id <- lapply(
-    html_elements(text, "td.first"), function(x) trimws(html_text(x))
+    xml_find_all(text, ".//td[@class='first']"), function(x) trimws(xml_text(x))
   )
   field_name <- lapply(
-    html_elements(text, "td.second"), function(x) trimws(html_text(x))
+    xml_find_all(text, ".//td[@class='second']"), function(x) trimws(xml_text(x))
   )
   field_value <- lapply(
-    html_elements(text, "td.third"), function(x) trimws(html_text(x))
+    xml_find_all(text, ".//td[@class='third']"), function(x) trimws(xml_text(x))
   )
   res <- list()
   for (i in seq_len(length(field_id))) {
@@ -114,4 +97,10 @@ read_cache <- function(key, cache_file = ".eudract.rds") {
   }
   db <- readRDS(cache_file)
   db[[key]]
+}
+
+
+extract_all <- function(text, pattern) {
+  match_positions <- gregexpr(pattern, text, perl = TRUE)
+  regmatches(text, match_positions)
 }
