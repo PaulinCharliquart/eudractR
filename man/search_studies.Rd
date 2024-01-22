@@ -18,5 +18,7 @@ a list of results
 Search Studies in Eudract
 }
 \examples{
+\dontrun{
 search_studies("dupilumab")
+}
 }

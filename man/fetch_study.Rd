@@ -18,5 +18,7 @@ a list of results
 Fetch info for a clinical study
 }
 \examples{
+\dontrun{
 fetch_study("2015-001314-10")
+}
 }

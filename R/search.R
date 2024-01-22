@@ -11,7 +11,9 @@ base_url <- "https://www.clinicaltrialsregister.eu/"
 #'
 #' @importFrom curl new_handle handle_setopt curl_fetch_memory
 #' @examples
+#' \dontrun{
 #' search_studies("dupilumab")
+#' }
 search_studies <- function(query, size = NULL) {
   h <- new_handle()
   handle_setopt(h, ssl_verifypeer = FALSE)
@@ -47,7 +49,9 @@ search_studies <- function(query, size = NULL) {
 #'
 #' @importFrom curl new_handle handle_setopt curl_fetch_memory
 #' @examples
+#' \dontrun{
 #' fetch_study("2015-001314-10")
+#' }
 fetch_study <- function(eudract, cache_file = NULL) {
   if (!validate_id(eudract_id = eudract)) {
     return(NULL)
