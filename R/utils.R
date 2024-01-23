@@ -104,3 +104,48 @@ extract_all <- function(text, pattern) {
   match_positions <- gregexpr(pattern, text, perl = TRUE)
   regmatches(text, match_positions)
 }
+
+# from htmltools
+escape_html <- local({
+  .html_specials <- list(
+    `&` = "&amp;",
+    `<` = "&lt;",
+    `>` = "&gt;"
+  )
+  .html_specials_pat <- paste(names(.html_specials), collapse = "|")
+  .html_specials_attr <- c(
+    .html_specials,
+    `'` = "&#39;",
+    `"` = "&quot;",
+    `\r` = "&#13;",
+    `\n` = "&#10;"
+  )
+  .html_specials_pat_attr <- paste(names(.html_specials_attr), collapse = "|")
+
+  function(text, attribute = FALSE) {
+    pat <- if (attribute) {
+      .html_specials_pat_attr
+    } else {
+      .html_specials_pat
+    }
+
+    text <- enc2utf8(as.character(text))
+    # Short circuit in the common case that there's nothing to escape
+    if (!any(grepl(pat, text, useBytes = TRUE))) {
+      return(trimws(text))
+    }
+
+    specials <- if (attribute) {
+      .html_specials_attr
+    } else {
+      .html_specials
+    }
+
+    for (chr in names(specials)) {
+      text <- gsub(chr, specials[[chr]], text, fixed = TRUE, useBytes = TRUE)
+    }
+    Encoding(text) <- "UTF-8"
+
+    return(trimws(text))
+  }
+})

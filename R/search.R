@@ -16,8 +16,9 @@ base_url <- "https://www.clinicaltrialsregister.eu/"
 #' }
 search_studies <- function(query, size = NULL) {
   h <- new_handle()
+  handle_setopt(h)
   handle_setopt(h, ssl_verifypeer = FALSE)
-  url <- paste0(base_url, "ctr-search/search?query=", trimws(query))
+  url <- paste0(base_url, "ctr-search/search?query=", escape_html(query))
   next_page <- "&page=1"
   ids <- c()
   while (length(next_page) > 0 && !is.na(unlist(next_page)[1])) {
