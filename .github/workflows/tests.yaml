@@ -66,7 +66,7 @@ jobs:
           r-version: "devel"
           use-public-rspm: true
       - name: Build
-        run: cd .. && R CMD build eudract
+        run: cd .. && R CMD build eudractR
   Documentation:
     needs: R-CMD-check
     runs-on: ubuntu-latest
