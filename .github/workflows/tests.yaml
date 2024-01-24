@@ -53,6 +53,8 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
+      - name: Build
+        run: cd .. && R CMD build eudract
   Documentation:
     needs: R-CMD-check
     runs-on: ubuntu-latest
