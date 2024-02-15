@@ -1,5 +1,5 @@
 Package: eudractR
-Title: Fetch Clinical Trials Information from EUDRACT
+Title: Fetch Clinical Trials Information from Clinicaltrialsregister.eu
 Version: 0.0.0.9000
 Authors@R: 
     person("Paulin", "Charliquart", , "paulincharliquart@gmail.com", role = c("aut", "cre"))
