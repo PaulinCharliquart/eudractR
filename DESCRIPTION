@@ -1,10 +1,10 @@
 Package: eudractR
-Title: Fetch Clinical Trials Information from Clinicaltrialsregister.eu
-Version: 0.0.0.9000
+Title: Fetch Clinical Trials Information from 'Clinicaltrialsregister.eu'
+Version: 0.1.0
 Authors@R: 
     person("Paulin", "Charliquart", , "paulincharliquart@gmail.com", role = c("aut", "cre"))
 Description: Search and fetch data about clinical trials registered in
-    EUDRACT database.
+    'EUDRACT' database.
 License: MIT + file LICENSE
 URL: https://github.com/PaulinCharliquart/eudractR
 BugReports: https://github.com/PaulinCharliquart/eudractR/issues
