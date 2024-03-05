@@ -12,4 +12,5 @@ test_that("Test search_studies", {
   expect_snapshot(search_studies("EFC14280"))
   expect_equal(length(search_studies("eeeeeeeeee")), 0)
   expect_equal(length(search_studies("covid", 10)), 10)
+  expect_true(length(search_studies("dupilumab")) >= 68)
 })

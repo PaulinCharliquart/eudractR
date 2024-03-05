@@ -21,14 +21,14 @@ search_studies <- function(query, size = NULL) {
   url <- paste0(base_url, "ctr-search/search?query=", escape_html(query))
   next_page <- "&page=1"
   ids <- c()
-  while (length(next_page) > 0 && !is.na(unlist(next_page)[1])) {
+  while (length(next_page) > 0 && !is.na(next_page)[1]) {
     page_id <- extract_all(next_page, "\\d")
     req <- curl_fetch_memory(paste0(url, "&page=", unlist(page_id)[1]), h)
     text <- rawToChar(req$content)
-    next_page <- extract_all(
+    next_page <- unlist(extract_all(
       text,
       '(?<=href=\\").*?(?=\\"\\saccesskey=\\"n\\">\\s*Next)'
-    )
+    ))
     found <- unlist(extract_all(text, "20\\d{2}-\\d{6}-\\d{2}"))
     ids <- c(ids, unique(found))
     if (!is.null(size) && length(ids) >= size) {
