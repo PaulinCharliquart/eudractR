@@ -1,0 +1,31 @@
+---
+title: "Examples"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Here is some exemples to search for clinical trials:
+
+```{r eval=FALSE}
+library(eudractR)
+
+# search trials by term:
+search_studies("covid")
+search_studies("oncology")
+``` 
+
+Or get more info for a given trial:
+
+```{r eval=FALSE}
+fetch_study("2015-001314-10") # to retrieve clinical trial info by Eudract ID
+```

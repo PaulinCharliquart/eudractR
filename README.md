@@ -5,7 +5,7 @@ The goal of eudractR is package to help you find clinical trials on EUDRACT.
 
 ## Installation
 
-You can install the development version of eudractR from [GitHub](https://github.com/) with:
+You can install the development version of eudractR from [GitHub](https://github.com/PaulinCharliquart/eudractR) with:
 
 ``` r
 # install.packages("devtools")
@@ -21,7 +21,7 @@ library(eudractR)
 
 fetch_study("2015-001314-10") # to retrieve clinical trial info by Eudract ID
 
-search("covid") # to search clinical trials about covid
+search_studies("covid") # to search clinical trials about covid
 ```
 
 ## Issues

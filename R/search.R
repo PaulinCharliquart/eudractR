@@ -3,7 +3,7 @@ base_url <- "https://www.clinicaltrialsregister.eu/"
 
 #' Search Studies in Eudract
 #'
-#' @param query a text query
+#' @param query a term to search
 #' @param size number of results to return
 #'
 #' @return a list of results

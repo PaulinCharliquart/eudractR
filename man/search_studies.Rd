@@ -7,7 +7,7 @@
 search_studies(query, size = NULL)
 }
 \arguments{
-\item{query}{a text query}
+\item{query}{a term to search}
 
 \item{size}{number of results to return}
 }
