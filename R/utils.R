@@ -40,13 +40,15 @@ parse_data <- function(x) {
   data <- sapply(section, function(x) NULL)
   text <- read_html(x)
   field_id <- lapply(
-    xml_find_all(text, ".//td[@class='first']"), function(x) trimws(xml_text(x))
+    xml_find_all(text, ".//td[@class='first']"),
+    function(x) trimws(xml_text(x))
   )
   field_name <- lapply(
     xml_find_all(text, ".//td[@class='second']"), function(x) trimws(xml_text(x))
   )
   field_value <- lapply(
-    xml_find_all(text, ".//td[@class='third']"), function(x) trimws(xml_text(x))
+    xml_find_all(text, ".//td[@class='third']"),
+    function(x) trimws(xml_text(x))
   )
   res <- list()
   for (i in seq_len(length(field_id))) {
